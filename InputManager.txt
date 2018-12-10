@@ -1,0 +1,63 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;// Required when using Event data.
+
+public class InputManager : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
+{
+    public static InputManager Instance = null;
+    public GameObject Laser;
+    private bool LaserWorking;
+    private const float Coeff = 100;
+    public GameObject Laser1;
+    public GameObject Laser2;
+
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else if (Instance != this)
+            Destroy(gameObject);
+        LaserWorking = false;
+    }
+
+    void Update()
+    {
+        if (LaserWorking)
+        {
+            GameManager.__energy -= Time.deltaTime * Coeff;
+        }
+    }
+
+   
+    
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        print("OnMouseDown");
+        Laser.SetActive(true);
+        LaserWorking = true;
+
+        if (TechManager.ThreeDimansionalLaserIsActive)
+        {
+            Laser1.SetActive(true);
+            Laser2.SetActive(true);
+        }
+    }
+
+    
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        print("OnMouseDown");
+
+        Laser.SetActive(false);
+        LaserWorking = false;
+        if (TechManager.ThreeDimansionalLaserIsActive)
+        {
+            Laser1.SetActive(false);
+            Laser2.SetActive(false);
+        }
+    }
+}
